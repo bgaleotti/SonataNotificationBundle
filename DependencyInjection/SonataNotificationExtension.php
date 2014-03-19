@@ -47,8 +47,17 @@ class SonataNotificationExtension extends Extension
         $loader->load('selector.xml');
         $loader->load('event.xml');
 
-        if ($config['consumers']['register_default']) {
-            $loader->load('default_consumers.xml');
+        foreach ($config['consumers'] as $name => $enabled) {
+            $consumer = sprintf('sonata.notification.consumer.%s', $name);
+            if (!$enabled || !$container->hasDefinition($consumer)) {
+                continue;
+            }
+
+            $definition = $container->getDefinition($consumer);
+            $definition->setPublic(true);
+            $definition->addTag('sonata.notification.consumer', array(
+                'type' => $name,
+            ));
         }
 
         $bundles = $container->getParameter('kernel.bundles');

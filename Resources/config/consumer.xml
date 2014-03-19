@@ -8,5 +8,13 @@
         <service id="sonata.notification.consumer.metadata" class="Sonata\NotificationBundle\Consumer\Metadata">
             <argument type="collection" />
         </service>
+
+        <service id="sonata.notification.consumer.mailer" class="Sonata\NotificationBundle\Consumer\SwiftMailerConsumer" public="false">
+            <argument type="service" id="mailer" />
+        </service>
+
+        <service id="sonata.notification.consumer.logger" class="Sonata\NotificationBundle\Consumer\LoggerConsumer" public="false">
+            <argument type="service" id="logger" />
+        </service>
     </services>
 </container>
